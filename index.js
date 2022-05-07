@@ -41,6 +41,7 @@ async function run() {
     // Update delivery
     app.put("/inventory/:id", async (req, res) => {
       console.log(req.body.quantity);
+      const restock = req.body.restock;
       const quantity = req.body.quantity;
       const sold = req.body.sold;
       const id = req.params.id;
@@ -48,12 +49,22 @@ async function run() {
       const filter = { _id: ObjectId(id) };
       const options = { upsert: false };
 
-      const updateDoc = {
-        $set: {
-          quantity,
-          sold,
-        },
-      };
+      let updateDoc;
+
+      if (quantity)
+        updateDoc = {
+          $set: {
+            quantity,
+            sold,
+          },
+        };
+
+      if (restock)
+        updateDoc = {
+          $set: {
+            quantity: restock,
+          },
+        };
 
       const result = await bookCollection.updateOne(filter, updateDoc, options);
 
