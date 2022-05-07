@@ -38,6 +38,11 @@ async function run() {
       res.send(cursor);
     });
 
+    // POST
+    app.post("/add", async (req, res) => {
+      console.log(req.body);
+    });
+
     // PUT - Update delivery
     app.put("/inventory/:id", async (req, res) => {
       console.log(req.body.quantity);
