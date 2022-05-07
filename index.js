@@ -30,7 +30,7 @@ async function run() {
       res.send(result);
     });
 
-    // Inventory Details Page API
+    // GET - Inventory Details Page API
     app.get("/inventory/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
@@ -38,7 +38,7 @@ async function run() {
       res.send(cursor);
     });
 
-    // Update delivery
+    // PUT - Update delivery
     app.put("/inventory/:id", async (req, res) => {
       console.log(req.body.quantity);
       const restock = req.body.restock;
@@ -67,6 +67,17 @@ async function run() {
         };
 
       const result = await bookCollection.updateOne(filter, updateDoc, options);
+
+      res.send(result);
+    });
+
+    // DELETE - Delete collection
+    app.delete("/inventory/:id", async (req, res) => {
+      const id = req.params.id;
+
+      const query = { _id: ObjectId(id) };
+
+      const result = await bookCollection.deleteOne(query);
 
       res.send(result);
     });
