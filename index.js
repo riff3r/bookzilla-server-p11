@@ -30,11 +30,34 @@ async function run() {
       res.send(result);
     });
 
+    // Inventory Details Page API
     app.get("/inventory/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const cursor = await bookCollection.findOne(query);
       res.send(cursor);
+    });
+
+    // Update delivery
+    app.put("/inventory/:id", async (req, res) => {
+      console.log(req.body.quantity);
+      const quantity = req.body.quantity;
+      const sold = req.body.sold;
+      const id = req.params.id;
+
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: false };
+
+      const updateDoc = {
+        $set: {
+          quantity,
+          sold,
+        },
+      };
+
+      const result = await bookCollection.updateOne(filter, updateDoc, options);
+
+      res.send(result);
     });
   } finally {
   }
