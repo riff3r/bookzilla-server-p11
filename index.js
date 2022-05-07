@@ -40,7 +40,12 @@ async function run() {
 
     // POST
     app.post("/add", async (req, res) => {
-      console.log(req.body);
+      let { data } = req?.body;
+      data.sold = 0;
+
+      const result = await bookCollection.insertOne(data);
+
+      res.send(result);
     });
 
     // PUT - Update delivery
