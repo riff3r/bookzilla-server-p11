@@ -38,6 +38,15 @@ async function run() {
       res.send(cursor);
     });
 
+    app.get("/myItems", async (req, res) => {
+      const { email } = req.query;
+      console.log(email);
+      const query = { email };
+      const cursor = bookCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     // POST
     app.post("/add", async (req, res) => {
       let { data } = req?.body;
