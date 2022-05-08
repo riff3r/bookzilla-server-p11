@@ -52,27 +52,42 @@ async function run() {
     });
 
     // GET
-    app.get("/inventory", verifyJWT, async (req, res) => {
+    // app.get("/inventory", verifyJWT, async (req, res) => {
+    //   const decodedEmail = req?.decoded?.email;
+    //   const { email } = req.query;
+
+    //   if (email === decodedEmail) {
+    //     const query = {};
+    //     const cursor = bookCollection.find(query);
+
+    //     const result = await cursor.toArray();
+    //     res.send(result);
+    //   } else {
+    //     return res.status(403).send({ message: "Forbidden Access" });
+    //   }
+    // });
+
+    app.get("/inventory", async (req, res) => {
+      // const decodedEmail = req?.decoded?.email;
+      const { email } = req.query;
+
+      const query = {};
+      const cursor = bookCollection.find(query);
+
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/myItems", verifyJWT, async (req, res) => {
       const decodedEmail = req?.decoded?.email;
       const { email } = req.query;
 
       if (email === decodedEmail) {
-        const query = {};
+        const query = { email };
         const cursor = bookCollection.find(query);
-
         const result = await cursor.toArray();
         res.send(result);
-      } else {
-        return res.status(403).send({ message: "Forbidden Access" });
       }
-    });
-
-    app.get("/myItems", async (req, res) => {
-      const { email } = req.query;
-      const query = { email };
-      const cursor = bookCollection.find(query);
-      const result = await cursor.toArray();
-      res.send(result);
     });
 
     // GET - Inventory Details Page API
